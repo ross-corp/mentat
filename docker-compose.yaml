@@ -1,15 +1,14 @@
 version: '2'
 
 services:
-
     plex:
         image: linuxserver/plex
         container_name: plex
         volumes:
-            - ${PLEX_CONFIG}:/config
-            - ${PLEX_MOVIES}:/data/movies
-            - ${PLEX_SHOWS}:/data/tvshows
-            - ${PLEX_TRANSCODE}:/data/transcode
+            - ./config/plex/config:/config
+            - ./data/plex/Movies:/data/movies
+            - ./data/plex/Shows:/data/tvshows
+            - ./data/plex/transcode:/data/transcode
         network_mode: host
         restart: always
         environment:
@@ -20,39 +19,42 @@ services:
         image: linuxserver/nzbget
         container_name: nzbget
         volumes:
-            - ${NZBGET_CONFIG}:/config
-            - ${NZBGET_DOWNLOADS}:/downloads
+            - ./config/nzbget/config:/config
+            - ./data/nzbget/downloads:/downloads
         restart: always
         environment:
             - TZ=America/New_York
         ports:
             - 6789:6789
+
     sonarr:
         image: linuxserver/sonarr
         container_name: sonarr
         depends_on:
             - nzbget
         volumes:
-            - ${SONARR_CONFIG}:/config
-            - ${NZBGET_DOWNLOADS}:/downloads
-            - ${PLEX_SHOWS}:/tv
+            - ./config/sonarr/config:/config
+            - ./data/nzbget/downloads:/downloads
+            - ./data/plex/Shows:/tv
         environment:
             - TZ=America/New_York
         ports:
             - 8989:8989
+
     radarr:
         image: linuxserver/radarr
         container_name: radarr
         depends_on:
             - nzbget
         volumes:
-            - ${RADARR_CONFIG}:/config
-            - ${NZBGET_DOWNLOADS}:/downloads
-            - ${PLEX_MOVIES}:/movies
+            - ./config/radarr/config:/config
+            - ./data/nzbget/downloads:/downloads
+            - ./data/plex/Movies:/movies
         environment:
             - TZ=America/New_York
         ports:
             - 7878:7878
+
     overseerr:
         image: sctx/overseerr:latest
         container_name: overseerr
@@ -62,8 +64,9 @@ services:
         ports:
             - 5055:5055
         volumes:
-            - ${OVERSEERR_CONFIG}:/app/config
+            - ./config/overseerr/config:/app/config
         restart: unless-stopped
+
     watchtower:
         image: v2tec/watchtower
         container_name: watchtower
