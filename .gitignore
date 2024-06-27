@@ -1,7 +1,1 @@
-.env
-
-.config/**
-!.config/**/.gitkeep
-
-.data/**
-!.data/**/.gitkeep
+.envrc
