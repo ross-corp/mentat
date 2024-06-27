@@ -1,3 +1,4 @@
+# Modified from LogicalExtension's comment in https://old.reddit.com/r/docker/comments/14lbvth/servarr_one_docker_compose_file_to_rule_them_all/
 ---
 version: 2.1
 
