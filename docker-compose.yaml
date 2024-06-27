@@ -10,7 +10,7 @@ x-default-container &default-container:
   environment:
     - PUID=1000 
     - PGID=100 
-    - TZ=Africa/Casablanca 
+    - TZ=Africa/Los_Angeles 
   restart: unless-stopped
 
 # containers on the mediarr nework, also have access to specific volumes
