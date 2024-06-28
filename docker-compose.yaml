@@ -81,17 +81,19 @@ services:
       - "9091:9091"
     # https://haugene.github.io/docker-transmission-openvpn/config-options/
     environment:
+      - OPENVPN_CONFIG=ch.protonvpn.udp # Switzerland
       - OPENVPN_PROVIDER=PROTONVPN
-      # Fill the following
+      - DISABLE_PORT_FORWARDER=false
+      - OPENVPN_OPTS=--inactive 3600 --ping 10 --ping-exit 60
       - WEBPROXY_ENABLED=false
       - LOCAL_NETWORK=192.168.0.0/16
       - TRANSMISSION_WEB_UI=flood-for-transmission
+    # Contains OPENVPN_USERNAME, OPENVPN_PASSWORD
+    # See here: https://account.protonvpn.com/account
+    env_file: "openvpn-credentials.env"
     volumes:
       - ./data/transmission/downloads:/data
       - /etc/localtime:/etc/localtime:ro
-      # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the ./openvpn/protonvpn folder as "default.ovpn"
-      # The folder is required vs a normal file due to an issue with bind mounts and resource locks
-      - ./openvpn/protonvpn:/etc/openvpn/protonvpn
     cap_add:
       - NET_ADMIN
 
