@@ -79,6 +79,7 @@ services:
     restart: always
     ports:
       - "9091:9091"
+      - "9092:9092"
     # https://haugene.github.io/docker-transmission-openvpn/config-options/
     environment:
       - OPENVPN_CONFIG=ch.protonvpn.udp # Switzerland
@@ -88,6 +89,8 @@ services:
       - WEBPROXY_ENABLED=false
       - LOCAL_NETWORK=192.168.0.0/16
       - TRANSMISSION_WEB_UI=flood-for-transmission
+      - WEBPROXY_ENABLED=true
+      - WEBPROXY_PORT=9092
     # Contains OPENVPN_USERNAME, OPENVPN_PASSWORD
     # See here: https://account.protonvpn.com/account
     env_file: "openvpn-credentials.env"
