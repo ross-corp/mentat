@@ -2,4 +2,4 @@ config/**
 data/**
 mentat.service
 
-default.ovpn
+./openvpn/protonvpn/default.ovpn
