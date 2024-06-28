@@ -1,6 +1,12 @@
 version: "2"
 
+secrets:
+    openvpn_creds:
+        # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the repo
+        file: ./ch.protonvpn.udp.ovpn
+
 services:
+  # plex
   plex:
     image: linuxserver/plex
     container_name: plex
@@ -15,28 +21,7 @@ services:
       - VERSION=latest
       - TZ=America/Los_Angeles
 
-  transmission:
-    image: haugene/transmission-openvpn:latest
-    container_name: transmission
-    restart: always
-    ports:
-      - "9091:9091"
-    # https://haugene.github.io/docker-transmission-openvpn/config-options/
-    environment:
-      - OPENVPN_PROVIDER=PROTONVPN
-      # Fill the following
-      - OPENVPN_CONFIG=
-      - OPENVPN_USERNAME=
-      - OPENVPN_PASSWORD=
-      - WEBPROXY_ENABLED=false
-      - LOCAL_NETWORK=192.168.0.0/16
-      - TRANSMISSION_WEB_UI=flood-for-transmission
-    volumes:
-      - /media/downloads:/data
-      - /etc/localtime:/etc/localtime:ro
-    cap_add:
-      - NET_ADMIN
-
+  # prowlarr handles setting torrent indexers for radarr and sonarr
   prowlarr:
     image: linuxserver/prowlarr:develop
     container_name: prowlarr
@@ -53,6 +38,20 @@ services:
       - /media/prowlarr:/config
       - /media/downloads/watch:/downloads
 
+  # web gui for radarr/sonarr
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/New_York
+    ports:
+      - 5055:5055
+    volumes:
+      - ./config/overseerr/config:/app/config
+    restart: unless-stopped
+
+  # tv show download orchestrator
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -67,6 +66,7 @@ services:
     ports:
       - 8989:8989
 
+  # movies download orchestrator
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -80,19 +80,30 @@ services:
       - TZ=America/New_York
     ports:
       - 7878:7878
-
-  overseerr:
-    image: sctx/overseerr:latest
-    container_name: overseerr
-    environment:
-      - LOG_LEVEL=info
-      - TZ=America/New_York
+ 
+  # torrent client
+  transmission:
+    image: haugene/transmission-openvpn:latest
+    container_name: transmission
+    restart: always
     ports:
-      - 5055:5055
+      - "9091:9091"
+    # https://haugene.github.io/docker-transmission-openvpn/config-options/
+    environment:
+      - OPENVPN_PROVIDER=PROTONVPN
+      # Fill the following
+      - WEBPROXY_ENABLED=false
+      - LOCAL_NETWORK=192.168.0.0/16
+      - TRANSMISSION_WEB_UI=flood-for-transmission
     volumes:
-      - ./config/overseerr/config:/app/config
-    restart: unless-stopped
+      - /media/downloads:/data
+      - /etc/localtime:/etc/localtime:ro
+    secrets:
+        - openvpn_creds
+    cap_add:
+      - NET_ADMIN
 
+  # image updater
   watchtower:
     image: v2tec/watchtower
     container_name: watchtower

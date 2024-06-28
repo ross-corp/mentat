@@ -1,3 +1,5 @@
 config/**
 data/**
 mentat.service
+
+*.ovpn
