@@ -90,7 +90,7 @@ services:
       - ./data/transmission/downloads:/data
       - /etc/localtime:/etc/localtime:ro
       # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the repo
-      - ./ch.protonvpn.udp.ovpn:/etc/openvpn/protonvpn/default.ovpn
+      - ./ch.protonvpn.udp.ovpn:/etc/openvpn/protonvpn/ch.protonvpn.udp.ovpn
     cap_add:
       - NET_ADMIN
 
