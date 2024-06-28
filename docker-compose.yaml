@@ -57,7 +57,7 @@ services:
     container_name: sonarr
     volumes:
       - ./config/sonarr/config:/config
-      - /media/downloads:/downloads
+      - ./data/transmission/downloads:/downloads
       - ./data/plex/Shows:/tv
     environment:
       - TZ=America/New_York
@@ -70,7 +70,7 @@ services:
     container_name: radarr
     volumes:
       - ./config/radarr/config:/config
-      - /media/downloads:/downloads
+      - ./data/transmission/downloads:/downloads
       - ./data/plex/Movies:/movies
     environment:
       - TZ=America/New_York
@@ -92,7 +92,7 @@ services:
       - LOCAL_NETWORK=192.168.0.0/16
       - TRANSMISSION_WEB_UI=flood-for-transmission
     volumes:
-      - /media/downloads:/data
+      - ./data/transmission/downloads:/data
       - /etc/localtime:/etc/localtime:ro
     secrets:
         - openvpn_creds
