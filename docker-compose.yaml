@@ -55,11 +55,9 @@ services:
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
-    depends_on:
-      - nzbget
     volumes:
       - ./config/sonarr/config:/config
-      - ./data/nzbget/downloads:/downloads
+      - /media/downloads:/downloads
       - ./data/plex/Shows:/tv
     environment:
       - TZ=America/New_York
@@ -70,11 +68,9 @@ services:
   radarr:
     image: linuxserver/radarr
     container_name: radarr
-    depends_on:
-      - nzbget
     volumes:
       - ./config/radarr/config:/config
-      - ./data/nzbget/downloads:/downloads
+      - /media/downloads:/downloads
       - ./data/plex/Movies:/movies
     environment:
       - TZ=America/New_York
