@@ -89,7 +89,8 @@ services:
     volumes:
       - ./data/transmission/downloads:/data
       - /etc/localtime:/etc/localtime:ro
-    # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the repo as "openvpn_creds"
+    # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the repo root as "openvpn_creds"
+      - ./openvpn_creds:/etc/openvpn/protonvpn/default.ovpn
     secrets:
         - openvpn_creds
     cap_add:
