@@ -91,6 +91,7 @@ services:
     # Contains OPENVPN_USERNAME, OPENVPN_PASSWORD
     # See here: https://account.protonvpn.com/account
     env_file: "openvpn-credentials.env"
+    user: root
     volumes:
       - ./data/transmission/downloads:/data
       - /etc/localtime:/etc/localtime:ro
