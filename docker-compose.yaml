@@ -89,10 +89,8 @@ services:
     volumes:
       - ./data/transmission/downloads:/data
       - /etc/localtime:/etc/localtime:ro
-    # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the repo root as "openvpn_creds"
-      - ./openvpn_creds:/etc/openvpn/protonvpn/default.ovpn
-    secrets:
-        - openvpn_creds
+      # Download the config from https://account.protonvpn.com/downloads, ensure the file is present in the repo root as "default.ovpn"
+      - ./default.ovpn:/etc/openvpn/protonvpn/default.ovpn
     cap_add:
       - NET_ADMIN
 
@@ -103,7 +101,3 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-secrets:
-    openvpn_creds:
-        file: ./openvpn_creds

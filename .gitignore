@@ -2,4 +2,4 @@ config/**
 data/**
 mentat.service
 
-openvpn_creds
+default.ovpn
