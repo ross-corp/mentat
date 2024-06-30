@@ -5,7 +5,7 @@ Observe the known (media) universe, and find us the files.
 Wraps the following services:
 
 - Plex (Media Server)
-- nzbget (Torrent Client)
+- Transmission w/ OpenVPN (Torrent Client)
 - Sonarr (Orchestrator for downloading TV shows)
 - Radarr (Orchestrator for downloading Movies)
 - Overseerr (Web client for specifying media to download)
